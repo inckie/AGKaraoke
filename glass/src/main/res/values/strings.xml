@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Karaoke</string>
+    <string name="title_activity_main">Karaoke</string>
+    <string name="lbl_sing">Sing!</string>
+    <string name="msg_no_songs">No songs found</string>
+</resources>
