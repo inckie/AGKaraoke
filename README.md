@@ -37,4 +37,4 @@ Code quality is far from production.
 * There is no scoring.
 * Some songs are not loaded properly due to deviations in formating.
 * A lot of UI work needed, especially on the phones.
-* Since Google Glass seems to render UI in the software mode, there is a change that using OpenGL for rendering can make things a bit faster. Or just optimize the plot/lyrics rendering by avoiding unnecessary invalidations.
+* Since Google Glass seems to render UI in the software mode, there is a chance that using OpenGL for rendering can make things a bit faster. Or just optimize the plot/lyrics rendering by avoiding unnecessary invalidations.
