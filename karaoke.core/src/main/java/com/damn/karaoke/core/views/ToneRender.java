@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import com.damn.karaoke.core.controller.processing.BaseToneDetector;
 import com.damn.karaoke.core.model.Song;
 import com.damn.karaoke.core.model.Tone;
 
@@ -86,7 +87,7 @@ public class ToneRender extends View {
 
         float norm = mTextWidth / length;
 
-        float step = height * 0.8f / 46; // NumHalftones
+        float step = height * 0.8f / BaseToneDetector.NumHalftones;
 
         for (Song.Syllable s : mLine.syllables) {
             if (s.to >= mPosition)

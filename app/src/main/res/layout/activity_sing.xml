@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:layout_margin="16dp"
     android:background="@android:color/white"
+    android:keepScreenOn="true"
     tools:context="com.damn.karaoke.phone.SingActivity">
 
     <LinearLayout

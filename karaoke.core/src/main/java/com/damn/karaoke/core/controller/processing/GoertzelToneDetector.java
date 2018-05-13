@@ -9,8 +9,8 @@ public class GoertzelToneDetector extends BaseToneDetector{
     private final float[] sCos = new float[NumHalftones];
     private final float[] sWnk = new float[NumHalftones];
 
-    public GoertzelToneDetector(int sampleRate, float time_sec, int threshold, int peak_count) {
-        super(sampleRate, time_sec, threshold, peak_count);
+    public GoertzelToneDetector(int sampleRate, int threshold, int peak_count) {
+        super(threshold, peak_count);
         for (int tone = 0; NumHalftones != tone; ++tone) {
             double omega = 2 * Math.PI * sTones[tone] / sampleRate;
             sCos[tone] = 2 * (float) (Math.cos(omega));

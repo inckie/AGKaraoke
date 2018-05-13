@@ -11,8 +11,8 @@ public class AutoCorrelationToneDetector extends BaseToneDetector {
 
     private final int mSampleRate;
 
-    public AutoCorrelationToneDetector(int sampleRate, float time_sec, int threshold, int peak_count) {
-        super(sampleRate, time_sec, threshold, peak_count);
+    public AutoCorrelationToneDetector(int sampleRate, int threshold, int peak_count) {
+        super(threshold, peak_count);
         mSampleRate = sampleRate;
     }
 

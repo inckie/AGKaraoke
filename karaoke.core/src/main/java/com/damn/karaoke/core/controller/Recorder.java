@@ -110,8 +110,8 @@ public class Recorder {
                             echo.setEnabled(true);
                     }
 
-                    IToneDetector detector = new GoertzelToneDetector(SAMPLE_RATE_IN_HZ, 0.1f, SENSITIVITY_NORMAL, 10);
-                    //IToneDetector detector = new AutoCorrelationToneDetector(SAMPLE_RATE_IN_HZ, 0.1f, SENSITIVITY_NORMAL, 10);
+                    IToneDetector detector = new GoertzelToneDetector(SAMPLE_RATE_IN_HZ, SENSITIVITY_NORMAL, 10);
+                    //IToneDetector detector = new AutoCorrelationToneDetector(SAMPLE_RATE_IN_HZ, SENSITIVITY_NORMAL, 10);
                     record.startRecording();
 
                     int currentTone = -1;

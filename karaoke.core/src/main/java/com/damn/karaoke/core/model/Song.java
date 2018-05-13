@@ -27,6 +27,7 @@ public class Song {
     public double gap;
     public List<Line> lines = new ArrayList<Line>();
 
+    //todo: use cache there
     private Bitmap coverImage;
     private boolean coverImageChecked;
 
