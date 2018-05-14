@@ -64,16 +64,19 @@ public class KaraokeController {
             mSong.fullPath = file;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+
         File audioFile = mSong.getAudioFile();
         if(null == audioFile)
             return false;
+
         if (!loadAudio(audioFile))
             return false;
 
         mPlayer.start();
         mRecorder.start();
-        return false;
+        return true;
     }
 
     private boolean loadAudio(@NotNull File file) {
