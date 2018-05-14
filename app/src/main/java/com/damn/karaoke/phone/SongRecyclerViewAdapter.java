@@ -84,8 +84,8 @@ public class SongRecyclerViewAdapter extends RecyclerView.Adapter<SongRecyclerVi
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mLblTitle = (TextView) view.findViewById(R.id.lbl_title);
-            mLblArtist = (TextView) view.findViewById(R.id.lbl_artist);
+            mLblTitle = view.findViewById(R.id.lbl_title);
+            mLblArtist = view.findViewById(R.id.lbl_artist);
             mCover = view.findViewById(R.id.img_cover);
         }
 

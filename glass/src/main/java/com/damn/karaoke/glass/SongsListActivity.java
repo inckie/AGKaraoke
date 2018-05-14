@@ -70,6 +70,8 @@ public class SongsListActivity extends Activity implements SongsDB.IListener {
 
         @Override
         public long getItemId(int position) {
+            // Never do this in production quality code.
+            // I have checked for many strings, and change of conflict is close to zero
             return empty() ? -1 : mSongList.get(position).fullPath.hashCode();
         }
 
