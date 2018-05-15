@@ -19,13 +19,13 @@ Project consist of 3 modules:
 
 On phones and tablets, usage of headphones is strongly recommended since the mic pick ups music playing, and messes up the tone detection.
 
-On Google glass, earbud is is a good idea since it provides much better audio quality, and <a href="https://arxiv.org/abs/1404.1320">much lower battery consumption</a>.
+On Google glass, earbud is a good idea since it provides much better audio quality, and <a href="https://arxiv.org/abs/1404.1320">much lower battery consumption</a>.
 
 ## Notes
 
 Application has two algorithms to detect pitch of the sound: autocorrelation, taken from Ultrastar Delux and optimized for integer math, and <a href="https://en.wikipedia.org/wiki/Goertzel_algorithm">Goertzel algorithm</a>, as described in Wikipedia. Toggle is only available from source code for now.
  
-Code quality is far from production.
+Code quality is far from production: Weak error checking, using string hashes as unique ids, and so on.
 
 ## Future plans
 * Both algorithms have huge performance problems on the Google Glass (which is strange, actually) leading to lags and overheating. So, JNI implementation should be added.
