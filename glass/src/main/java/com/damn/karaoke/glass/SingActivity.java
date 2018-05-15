@@ -30,9 +30,7 @@ public class SingActivity extends Activity {
         mKaraokeKonroller.init(findViewById(R.id.root), R.id.lyrics, R.id.tone_render);
 
         String songFile = getIntent().getStringExtra(EXTRA_SONG);
-        if(null != songFile)
-            mKaraokeKonroller.load(new File(songFile));
-        else
+        if(null == songFile || !mKaraokeKonroller.load(new File(songFile)))
             finish();
     }
 
@@ -42,24 +40,13 @@ public class SingActivity extends Activity {
             @Override
             public boolean onGesture(Gesture gesture) {
                 if (gesture == Gesture.TAP) {
+                    // todo: pause/resume
                     return true;
                 } else if (gesture == Gesture.SWIPE_DOWN) {
                     finish();
                     return true;
                 }
 
-                return false;
-            }
-        });
-        gestureDetector.setFingerListener(new GestureDetector.FingerListener() {
-            @Override
-            public void onFingerCountChanged(int previousCount, int currentCount) {
-                // do something on finger count changes
-            }
-        });
-        gestureDetector.setScrollListener(new GestureDetector.ScrollListener() {
-            @Override
-            public boolean onScroll(float displacement, float delta, float velocity) {
                 return false;
             }
         });
@@ -90,8 +77,8 @@ public class SingActivity extends Activity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         mKaraokeKonroller.onStop();
     }
 
