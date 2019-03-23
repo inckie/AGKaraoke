@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class KaraokeController {
+public class KaraokeController implements Recorder.IToneListener {
 
     private final MediaPlayer mPlayer;
     private final Recorder mRecorder;
@@ -139,6 +139,7 @@ public class KaraokeController {
         mHandler.post(mUpdater);
     }
 
+    @Override
     public void toneChanged(int tone, long duration) {
         if (!mPlayer.isPlaying() || -1 == mLineStart)
             return;

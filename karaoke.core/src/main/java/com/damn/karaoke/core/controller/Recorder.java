@@ -18,6 +18,10 @@ import com.damn.karaoke.core.controller.processing.IToneDetector;
 
 public class Recorder {
 
+    public interface IToneListener {
+        void toneChanged(int tone, long duration);
+    }
+
     public static final int SAMPLE_RATE_IN_HZ = 16000;
 
     public static final int SENSITIVITY_NORMAL = 750;
@@ -26,7 +30,7 @@ public class Recorder {
     private final Handler mHandler;
     private volatile AudioRecordingThread mThread;
 
-    public Recorder(final KaraokeController controller) {
+    public Recorder(final IToneListener controller) {
         mHandler = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(Message msg) {
@@ -39,7 +43,6 @@ public class Recorder {
         if (null != mThread)
             return true; // running
         try {
-
             mThread = new AudioRecordingThread();
             mThread.start();
         } catch (Exception e) {
@@ -111,7 +114,6 @@ public class Recorder {
                     }
 
                     IToneDetector detector = new GoertzelToneDetector(SAMPLE_RATE_IN_HZ, SENSITIVITY_NORMAL, 10);
-                    //IToneDetector detector = new AutoCorrelationToneDetector(SAMPLE_RATE_IN_HZ, SENSITIVITY_NORMAL, 10);
                     record.startRecording();
 
                     int currentTone = -1;
