@@ -19,6 +19,10 @@ public abstract class BaseToneDetector implements IToneDetector {
         }
     }
 
+    public static float[] getTones(){
+        return sTones;
+    }
+
     public BaseToneDetector(int threshold, int peak_count) {
         mThreshold = threshold;
         mPeakCountThreshold = peak_count;
