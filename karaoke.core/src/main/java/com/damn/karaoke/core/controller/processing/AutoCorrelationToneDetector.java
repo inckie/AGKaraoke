@@ -48,9 +48,7 @@ public class AutoCorrelationToneDetector extends BaseToneDetector {
         int samplesPerPeriod = (int) (sampleRate / freq);
         int correlatingSampleIndex = sampleIndex + samplesPerPeriod; // index of sample one period ahead
 
-        int maxComp = Math.min(size, 1000);
-
-        while (correlatingSampleIndex < maxComp) {
+        while (correlatingSampleIndex < size) {
             // distance (0=equal .. 65536=totally different) between correlated samples
             accumDist += Math.abs((int)buff.get(sampleIndex++) - (int)buff.get(correlatingSampleIndex++));
         }
