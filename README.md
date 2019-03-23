@@ -17,14 +17,15 @@ Project consist of 3 modules:
   * on Google Glass, say "Show lyrics", or start the application from Home card menu.
   * on usual Android device just start the app.
 
-On phones and tablets, usage of headphones is strongly recommended since the mic pick ups music playing, and messes up the tone detection.
+On phones and tablets, usage of headphones is strongly recommended since the mic pick ups the music been playing, and messes up tone detection.
 
 On Google glass, earbud is a good idea since it provides much better audio quality, and <a href="https://arxiv.org/abs/1404.1320">much lower battery consumption</a>.
 
 ## Notes
 
-Application has two algorithms to detect pitch of the sound: autocorrelation, taken from Ultrastar Delux and optimized for integer math, and <a href="https://en.wikipedia.org/wiki/Goertzel_algorithm">Goertzel algorithm</a>, as described in Wikipedia. Toggle is only available from source code for now.
- 
+Application has two algorithms of pitch detection: autocorrelation, taken from Ultrastar Delux and optimized for integer math, and <a href="https://en.wikipedia.org/wiki/Goertzel_algorithm">Goertzel algorithm</a>, as described in Wikipedia. Toggle is only available from source code for now.
+Autocorrelation seems to work really bad for 16000 sample rate and sine signal. 44100 is a bit better in reasonable range. Goertzel is pretty good for both rates. Not sure about real voice.
+
 Code quality is far from production: Weak error checking, using string hashes as unique ids, and so on.
 
 ## Future plans
@@ -35,6 +36,6 @@ Code quality is far from production: Weak error checking, using string hashes as
   * there is no visual timing cue on long pauses
   * pitch plot width is matched to text width, which is unnecessary
 * There is no scoring.
-* Some songs are not loaded properly due to deviations in formating.
+* Some songs are not loaded properly due to deviations in formating (broken files).
 * A lot of UI work needed, especially on the phones.
 * Since Google Glass seems to render UI in the software mode, there is a chance that using OpenGL for rendering can make things a bit faster. Or just optimize the plot/lyrics rendering by avoiding unnecessary invalidations.
