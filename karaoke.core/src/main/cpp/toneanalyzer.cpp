@@ -57,7 +57,7 @@ namespace {
         return data.insert(std::make_pair(sampleRate, generateTable(sampleRate))).first->second;
     }
 
-    float goertzel(const short* x, int size, int tone, const table& t) {
+    float goertzel(const short* x, int size, const CosWnk& cw) {
         float skn0 = 0;
         float skn1 = 0;
         float skn2 = 0;
@@ -65,9 +65,9 @@ namespace {
         for (int i = 0; size != i; ++i) {
             skn2 = skn1;
             skn1 = skn0;
-            skn0 = t[tone].cos * skn1 - skn2 + x[i] / 16356.0f;
+            skn0 = cw.cos * skn1 - skn2 + x[i] / 16356.0f;
         }
-        return std::abs(skn0 - t[tone].wnk * skn1);
+        return std::abs(skn0 - cw.wnk * skn1);
     }
 
 } // namespace
@@ -85,7 +85,7 @@ Java_com_damn_karaoke_core_controller_processing_GoertzelToneDetectorJNI_bestMat
 
     for (int tone = 0; NumHalftones != tone; ++tone) {
         // I can cast byte* to short* since android audio record buffer is native byte order
-        float power = goertzel((const short*)b, size / 2, tone, table);
+        float power = goertzel((const short*)b, size / 2, table[tone]);
         if (power < maxPower)
             continue;
         maxPower = power;
