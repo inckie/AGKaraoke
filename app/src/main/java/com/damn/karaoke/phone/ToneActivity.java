@@ -1,7 +1,12 @@
 package com.damn.karaoke.phone;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
@@ -28,13 +33,25 @@ public class ToneActivity extends AppCompatActivity implements Recorder.IToneLis
     @Override
     protected void onResume() {
         super.onResume();
-        mRecorder.start();
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+        else
+            mRecorder.start();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mRecorder.stop();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
+            finish();
+        else
+            mRecorder.start();
     }
 
     @SuppressLint("SetTextI18n")
