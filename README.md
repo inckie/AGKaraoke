@@ -25,11 +25,11 @@ On Google glass, earbud is a good idea since it provides much better audio quali
 
 Application has two algorithms of pitch detection: autocorrelation, taken from Ultrastar Delux and optimized for integer math, and <a href="https://en.wikipedia.org/wiki/Goertzel_algorithm">Goertzel algorithm</a>, as described in Wikipedia. Toggle is only available from source code for now.
 Autocorrelation seems to work really bad for 16000 sample rate and sine signal. 44100 is a bit better in reasonable range. Goertzel is pretty good for both rates. Not sure about real voice.
+There is also a JNI version of Goertzel, used by default now. For Samsung S7, it 4-7 (debug/release builds) times faster than Java one.
 
 Code quality is far from production: Weak error checking, using string hashes as unique ids, and so on.
 
 ## Future plans
-* Both algorithms have huge performance problems on the Google Glass (which is strange, actually) leading to lags and overheating. So, JNI implementation should be added.
 * Since I am an awful singer, and can't match the pitch of any song to check the pitch detection, some test audio files with real performances are required. Adding a couple unit tests based on these would be nice.
 * The way lyrics and pitch are displayed is different from other Karaoke software:
   * next line is not displayed until it played
