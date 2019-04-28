@@ -16,6 +16,10 @@ android {
         }
     }
 
+    packagingOptions {
+        exclude 'lib/x86/libtoneanalyzer.so'
+        exclude 'lib/x86_64/libtoneanalyzer.so'
+    }
 }
 
 dependencies {

@@ -9,7 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import com.damn.karaoke.core.controller.processing.GoertzelToneDetector;
+import com.damn.karaoke.core.controller.processing.GoertzelToneDetectorJNI;
 import com.damn.karaoke.core.controller.processing.IToneDetector;
 
 /**
@@ -113,7 +113,7 @@ public class Recorder {
                             echo.setEnabled(true);
                     }
 
-                    IToneDetector detector = new GoertzelToneDetector(SAMPLE_RATE_IN_HZ, SENSITIVITY_NORMAL, 10);
+                    IToneDetector detector = new GoertzelToneDetectorJNI(SAMPLE_RATE_IN_HZ, SENSITIVITY_NORMAL, 10);
                     record.startRecording();
 
                     int currentTone = -1;
