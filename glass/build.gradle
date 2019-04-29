@@ -19,6 +19,7 @@ android {
     packagingOptions {
         exclude 'lib/x86/libtoneanalyzer.so'
         exclude 'lib/x86_64/libtoneanalyzer.so'
+        exclude 'lib/arm64-v8a/libtoneanalyzer.so'
     }
 }
 
