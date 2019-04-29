@@ -66,12 +66,12 @@ Java_com_damn_karaoke_core_controller_processing_GoertzelToneDetectorJNI_bestMat
 
     const auto& table = get_frequency_table(sampleRate);
 
-    int bestTone = -1;
+    jint bestTone = -1;
     float maxPower = std::numeric_limits<float>::min();
 
     auto b = env->GetByteArrayElements(data, nullptr);
 
-    for (int tone = 0; NumHalftones != tone; ++tone) {
+    for (auto tone = 0; NumHalftones != tone; ++tone) {
         // I can cast byte* to short* since android audio record buffer is native byte order
         float power = goertzel((const short*)b, size / 2, table[tone]);
         if (power < maxPower)
