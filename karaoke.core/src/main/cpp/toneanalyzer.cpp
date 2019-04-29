@@ -2,7 +2,6 @@
 
 #include <unordered_map>
 #include <mutex>
-#include <vector>
 #include <array>
 
 #include <cmath>
@@ -13,8 +12,6 @@ namespace {
     constexpr auto HalftoneBase = com_damn_karaoke_core_controller_processing_GoertzelToneDetectorJNI_HalftoneBase;
     constexpr auto BaseToneFreq = com_damn_karaoke_core_controller_processing_GoertzelToneDetectorJNI_BaseToneFreq;
 
-    const float FM_PI = (float)M_PI;
-
     struct CosWnk {
         float cos;
         float wnk;
@@ -22,20 +19,11 @@ namespace {
 
     typedef std::array<CosWnk, NumHalftones> table;
 
-    auto generateTones() {
-        // std::pow is not constexpr so we can't generate the sequence as constexpr
-        std::array<float, NumHalftones> res{0};
-        for (int tone = 0; NumHalftones != tone; ++tone)
-            res[tone] = (float) (BaseToneFreq * std::pow(HalftoneBase, tone));
-        return res;
-    }
-
-    const auto sTones = generateTones();
-
     auto generateTable(int sampleRate) {
         table res;
         for (int tone = 0; NumHalftones != tone; ++tone) {
-            auto omega = 2 * FM_PI * sTones[tone] / sampleRate;
+            auto freq = BaseToneFreq * std::pow(HalftoneBase, tone);
+            auto omega = float(2 * M_PI * freq / sampleRate);
             res[tone].cos = std::cos( omega) * 2;
             res[tone].wnk = std::exp(-omega);
         }
