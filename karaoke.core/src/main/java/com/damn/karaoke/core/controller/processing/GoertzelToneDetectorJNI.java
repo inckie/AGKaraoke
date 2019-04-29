@@ -18,10 +18,9 @@ public class GoertzelToneDetectorJNI extends BaseToneDetector {
         if (read < 2)
             return -1;
 
-        int size = read / 2;
         ShortBuffer buff = ByteBuffer.wrap(data, 0, read).order(ByteOrder.nativeOrder()).asShortBuffer();
 
-        if(!hasSignal(buff, size))
+        if(!hasSignal(buff, read / 2))
             return -1;
 
         return bestMatchTone(data, read, sampleRate);
