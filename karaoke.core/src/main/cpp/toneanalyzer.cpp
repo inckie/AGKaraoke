@@ -66,26 +66,24 @@ namespace {
 
 JNIEXPORT jint JNICALL
 Java_com_damn_karaoke_core_controller_processing_GoertzelToneDetectorJNI_bestMatchTone(
-        JNIEnv* env, jclass cls, jbyteArray data, jint size, jint sampleRate) {
+        JNIEnv* env, jclass cls, jshortArray data, jint size, jint sampleRate) {
 
     const auto& table = get_frequency_table(sampleRate);
 
-    auto b = env->GetByteArrayElements(data, nullptr);
+    auto b = env->GetShortArrayElements(data, nullptr);
 
-    const auto samples = size / 2;
     jint bestTone = 0;
-    // I can cast byte* to short* since android audio record buffer is native byte order
-    float maxPower = goertzel((const short*)b, samples, table[bestTone]);
+    float maxPower = goertzel(b, size, table[bestTone]);
 
     for (auto tone = 1; NumHalftones != tone; ++tone) {
-        float power = goertzel((const short*)b, samples, table[tone]);
+        float power = goertzel(b, size, table[tone]);
         if (power < maxPower)
             continue;
         maxPower = power;
         bestTone = tone;
     }
 
-    env->ReleaseByteArrayElements(data, b, JNI_ABORT);
+    env->ReleaseShortArrayElements(data, b, JNI_ABORT);
 
     return bestTone;
 }

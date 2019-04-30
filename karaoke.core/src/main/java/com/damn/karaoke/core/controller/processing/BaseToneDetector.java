@@ -1,7 +1,5 @@
 package com.damn.karaoke.core.controller.processing;
 
-import java.nio.ShortBuffer;
-
 public abstract class BaseToneDetector implements IToneDetector {
 
     protected static final double HalftoneBase = 1.05946309436; // 2^(1/12) -> HalftoneBase^12 = 2 (one octave)
@@ -28,10 +26,10 @@ public abstract class BaseToneDetector implements IToneDetector {
         mPeakCountThreshold = peak_count;
     }
 
-    protected boolean hasSignal(ShortBuffer buff, int size) {
+    protected boolean hasSignal(short[] buff, int size) {
         int peaks = 0;
         for (int s = 0; size != s && peaks < mPeakCountThreshold; ++s)
-            if (Math.abs(buff.get(s)) > mThreshold)
+            if (Math.abs(buff[s]) > mThreshold)
                 ++peaks;
 
         return peaks == mPeakCountThreshold;

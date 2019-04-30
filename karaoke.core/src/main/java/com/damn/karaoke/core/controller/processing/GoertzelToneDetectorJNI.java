@@ -1,9 +1,5 @@
 package com.damn.karaoke.core.controller.processing;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.ShortBuffer;
-
 public class GoertzelToneDetectorJNI extends BaseToneDetector {
 
     private final int sampleRate;
@@ -14,19 +10,17 @@ public class GoertzelToneDetectorJNI extends BaseToneDetector {
     }
 
     @Override
-    public int analyze(byte[] data, int read) {
+    public int analyze(short[] data, int read) {
         if (read < 2)
             return -1;
 
-        ShortBuffer buff = ByteBuffer.wrap(data, 0, read).order(ByteOrder.nativeOrder()).asShortBuffer();
-
-        if(!hasSignal(buff, read / 2))
+        if(!hasSignal(data, read))
             return -1;
 
         return bestMatchTone(data, read, sampleRate);
     }
 
-    private static native int bestMatchTone(byte[] data, int size, int sampleRate);
+    private static native int bestMatchTone(short[] data, int size, int sampleRate);
 
     static {
         System.loadLibrary("toneanalyzer");

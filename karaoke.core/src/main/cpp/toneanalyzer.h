@@ -16,10 +16,10 @@ extern "C" {
 /*
  * Class:     com_damn_karaoke_core_controller_processing_GoertzelToneDetectorJNI
  * Method:    bestMatchTone
- * Signature: ([BII)I
+ * Signature: ([SII)I
  */
 JNIEXPORT jint JNICALL Java_com_damn_karaoke_core_controller_processing_GoertzelToneDetectorJNI_bestMatchTone
-  (JNIEnv *, jclass, jbyteArray, jint, jint);
+  (JNIEnv *, jclass, jshortArray, jint, jint);
 
 #ifdef __cplusplus
 }

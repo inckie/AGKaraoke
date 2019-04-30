@@ -70,7 +70,7 @@ public class Recorder {
 
     private class AudioRecordingThread extends Thread {
 
-        private byte[] mAudioBuffer;
+        private short[] mAudioBuffer;
 
         private volatile boolean mIsRecording = true;
 
@@ -81,7 +81,7 @@ public class Recorder {
                     AudioFormat.ENCODING_PCM_16BIT);
             if (bufferSize <= 0)
                 throw new Exception("Unsupported record profile");
-            mAudioBuffer = new byte[2 * bufferSize];
+            mAudioBuffer = new short[bufferSize];
         }
 
         @Override
@@ -119,15 +119,13 @@ public class Recorder {
                     int currentTone = -1;
                     while (mIsRecording) {
                         int read = record.read(mAudioBuffer, 0, mAudioBuffer.length);
-                        if ((read == AudioRecord.ERROR_INVALID_OPERATION) ||
-                                (read == AudioRecord.ERROR_BAD_VALUE) ||
-                                (read <= 0)) {
+                        if (read <= 0) {
                             continue;
                         }
                         int tone = detector.analyze(mAudioBuffer, read);
                         if (currentTone != tone) {
                             currentTone = tone;
-                            mHandler.obtainMessage(currentTone, 1000 * read / 2 / SAMPLE_RATE_IN_HZ, 0).sendToTarget();
+                            mHandler.obtainMessage(currentTone, 1000 * read / SAMPLE_RATE_IN_HZ, 0).sendToTarget();
                         }
                     }
 
