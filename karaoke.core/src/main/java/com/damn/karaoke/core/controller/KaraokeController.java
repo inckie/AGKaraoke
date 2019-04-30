@@ -51,8 +51,8 @@ public class KaraokeController implements Recorder.IToneListener {
     }
 
     public void init(View view, int lyrics, int tone_render) {
-        mLyrics = (LyricsView) view.findViewById(lyrics);
-        mToneRender = (ToneRender) view.findViewById(tone_render);
+        mLyrics = view.findViewById(lyrics);
+        mToneRender = view.findViewById(tone_render);
         mToneRender.setTextField(mLyrics);
         mToneRender.setTones(mTones); // risky a bit, but we all are in the UI thread
     }
