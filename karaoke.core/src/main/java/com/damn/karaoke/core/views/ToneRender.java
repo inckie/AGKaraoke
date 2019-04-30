@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.text.TextPaint;
@@ -29,7 +28,6 @@ public class ToneRender extends View {
     private Bitmap mCanvasBitmap;
     private Canvas mCanvas;
 
-    private Matrix mMatrix = new Matrix();
     private Song.Line mLine;
     private TextPaint mTextPaint;
     private Paint mTonePaint = new Paint();
@@ -46,7 +44,6 @@ public class ToneRender extends View {
         mTonePaint.setARGB(255, 255, 0,0);
         mPassedPaint.setARGB(255, 0, 255,0);
         mVoicePaint.setARGB(255, 0, 0,255);
-        mMatrix.reset();
     }
 
     @Override
@@ -119,7 +116,7 @@ public class ToneRender extends View {
                     mVoicePaint);
         }
 
-        canvas.drawBitmap(mCanvasBitmap, mMatrix, null);
+        canvas.drawBitmap(mCanvasBitmap, 0, 0, null);
     }
 
     public void setTextField(TextView tv){
