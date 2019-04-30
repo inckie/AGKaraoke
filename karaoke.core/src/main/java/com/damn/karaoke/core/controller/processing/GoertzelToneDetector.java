@@ -5,6 +5,8 @@ public class GoertzelToneDetector extends BaseToneDetector{
     private final float[] sCos = new float[NumHalftones];
     private final float[] sWnk = new float[NumHalftones];
 
+    private static final float sNorm = 1.0f / 16356.0f;
+
     public GoertzelToneDetector(int sampleRate, int threshold, int peak_count) {
         super(threshold, peak_count);
         for (int tone = 0; NumHalftones != tone; ++tone) {
@@ -22,9 +24,9 @@ public class GoertzelToneDetector extends BaseToneDetector{
         if(!hasSignal(data, read))
             return -1;
 
-        int bestTone = -1;
-        float maxPower = Float.MIN_VALUE;
-        for (int tone = 0; NumHalftones != tone; ++tone) {
+        int bestTone = 0;
+        float maxPower = goertzel(data, read, bestTone);
+        for (int tone = 1; NumHalftones != tone; ++tone) {
             float power = goertzel(data, read, tone);
             if (power < maxPower)
                 continue;
@@ -42,7 +44,7 @@ public class GoertzelToneDetector extends BaseToneDetector{
         for (int i = 0; size != i; ++i) {
             skn2 = skn1;
             skn1 = skn0;
-            skn0 = sCos[tone] * skn1 - skn2 + x[i] / 16356.0f;
+            skn0 = sCos[tone] * skn1 - skn2 + x[i] * sNorm;
         }
         return Math.abs(skn0 - sWnk[tone] * skn1);
     }
