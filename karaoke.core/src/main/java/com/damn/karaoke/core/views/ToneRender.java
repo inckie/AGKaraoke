@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.Rect;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -26,19 +25,21 @@ import java.util.List;
  */
 
 public class ToneRender extends View {
+
     private Bitmap mCanvasBitmap;
     private Canvas mCanvas;
 
-    private Rect mRect = new Rect();
     private Matrix mMatrix = new Matrix();
     private Song.Line mLine;
-    private TextPaint mPaint;
+    private TextPaint mTextPaint;
     private Paint mTonePaint = new Paint();
     private Paint mPassedPaint = new Paint();
     private Paint mVoicePaint = new Paint();
     private double mPosition;
     private List<Tone> mTones;
     private float mTextWidth;
+
+    private boolean mHasBG;
 
     public ToneRender(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -58,9 +59,6 @@ public class ToneRender extends View {
         int width = getWidth();
         int height = getHeight();
 
-        // Create canvas once we're ready to draw
-        mRect.set(0, 0, width, height);
-
         // Handle resize
         if (null != mCanvasBitmap)
             if (mCanvasBitmap.getWidth() != width ||
@@ -71,12 +69,12 @@ public class ToneRender extends View {
             }
 
         if (mCanvasBitmap == null)
-            mCanvasBitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
+            mCanvasBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
-        if (mCanvas == null)
+        if (mCanvas == null) {
             mCanvas = new Canvas(mCanvasBitmap);
-
-        mCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            mHasBG = false;
+        }
 
         float startX = (width - mTextWidth) / 2;
 
@@ -89,14 +87,20 @@ public class ToneRender extends View {
 
         float step = height * 0.8f / BaseToneDetector.NumHalftones;
 
-        for (Song.Syllable s : mLine.syllables) {
-            if (s.to >= mPosition)
+        if (!mHasBG) {
+            mCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            for (Song.Syllable s : mLine.syllables) {
                 mCanvas.drawRect(
                         startX + norm * ((float) s.from - minTime),
                         baseY - s.tone * step,
                         startX + norm * ((float) s.to - minTime),
                         baseY + 10 - s.tone * step,
                         mTonePaint);
+            }
+            mHasBG = true;
+        }
+
+        for (Song.Syllable s : mLine.syllables) {
             if(s.from <= mPosition)
                 mCanvas.drawRect(
                         startX + norm * ((float) s.from - minTime),
@@ -119,13 +123,14 @@ public class ToneRender extends View {
     }
 
     public void setTextField(TextView tv){
-        mPaint = tv.getPaint();
+        mTextPaint = tv.getPaint();
     }
 
     public void setLine(Song.Line line){
         mLine = line;
-        if(null != mPaint && null != mLine) {
-            mTextWidth = mPaint.measureText(mLine.toString());
+        mHasBG = false;
+        if(null != mTextPaint && null != mLine) {
+            mTextWidth = mTextPaint.measureText(mLine.toString());
             invalidate();
         }
     }
