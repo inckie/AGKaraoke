@@ -12,6 +12,10 @@ namespace {
     constexpr auto HalftoneBase = com_damn_karaoke_core_controller_processing_GoertzelToneDetectorJNI_HalftoneBase;
     constexpr auto BaseToneFreq = com_damn_karaoke_core_controller_processing_GoertzelToneDetectorJNI_BaseToneFreq;
 
+    // Normalization is not really needed for goertzel, but it seems to give better results.
+    // Android audio recording seems to keep the values under 16356
+    const float norm = 1.0f / 16356.0f;
+
     struct CosWnk {
         float cos;
         float wnk;
@@ -53,7 +57,7 @@ namespace {
         for (int i = 0; size != i; ++i) {
             skn2 = skn1;
             skn1 = skn0;
-            skn0 = cw.cos * skn1 - skn2 + x[i] / 16356.0f;
+            skn0 = cw.cos * skn1 - skn2 + x[i] * norm;
         }
         return std::abs(skn0 - cw.wnk * skn1);
     }
@@ -66,14 +70,15 @@ Java_com_damn_karaoke_core_controller_processing_GoertzelToneDetectorJNI_bestMat
 
     const auto& table = get_frequency_table(sampleRate);
 
-    jint bestTone = -1;
-    float maxPower = std::numeric_limits<float>::min();
-
     auto b = env->GetByteArrayElements(data, nullptr);
 
-    for (auto tone = 0; NumHalftones != tone; ++tone) {
-        // I can cast byte* to short* since android audio record buffer is native byte order
-        float power = goertzel((const short*)b, size / 2, table[tone]);
+    const auto samples = size / 2;
+    jint bestTone = 0;
+    // I can cast byte* to short* since android audio record buffer is native byte order
+    float maxPower = goertzel((const short*)b, samples, table[bestTone]);
+
+    for (auto tone = 1; NumHalftones != tone; ++tone) {
+        float power = goertzel((const short*)b, samples, table[tone]);
         if (power < maxPower)
             continue;
         maxPower = power;
