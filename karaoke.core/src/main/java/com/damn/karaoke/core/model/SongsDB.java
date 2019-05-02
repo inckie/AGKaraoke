@@ -11,7 +11,6 @@ import java.io.FileFilter;
 import java.lang.ref.WeakReference;
 import java.nio.charset.Charset;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -92,19 +91,10 @@ public class SongsDB {
 
     private static class ScanTask extends AsyncTask<File, Song, List<Song>> {
 
-        private static final FileFilter mFileFilter = new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.isFile() && pathname.getName().endsWith(".txt");
-            }
-        };
+        private static final FileFilter mFileFilter = (pathname)
+                -> pathname.isFile() && pathname.getName().endsWith(".txt");
 
-        private static final FileFilter mDirFilter = new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.isDirectory();
-            }
-        };
+        private static final FileFilter mDirFilter = File::isDirectory;
 
         private final WeakReference<SongsDB> mListener;
 
@@ -146,12 +136,7 @@ public class SongsDB {
                     }
                 }
             }
-            Collections.sort(res, new Comparator<Song>() {
-                @Override
-                public int compare(Song a, Song b) {
-                    return String.CASE_INSENSITIVE_ORDER.compare(a.title, b.title);
-                }
-            });
+            Collections.sort(res, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(a.title, b.title));
             return res;
         }
 
