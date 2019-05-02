@@ -18,7 +18,7 @@ import java.util.List;
 
 public class SongsDB {
 
-    private final List<Song> mSongs = new LinkedList<Song>();
+    private final List<Song> mSongs = new LinkedList<>();
 
     private File mRoot;
 
@@ -37,7 +37,7 @@ public class SongsDB {
         return mSongs;
     }
 
-    private final HashSet<IListener> mListeners = new HashSet<IListener>();
+    private final HashSet<IListener> mListeners = new HashSet<>();
 
     public void subscribe(IListener listener) {
         if(!mListeners.add(listener))
@@ -51,13 +51,13 @@ public class SongsDB {
 
     private void notifyScanStarted() {
         // make a copy before iterating
-        for (IListener l : new HashSet<IListener>(mListeners))
+        for (IListener l : new HashSet<>(mListeners))
             l.onScanStarted();
     }
 
     private void notifyUpdated() {
         // make a copy before iterating
-        for (IListener l : new HashSet<IListener>(mListeners))
+        for (IListener l : new HashSet<>(mListeners))
             l.onListUpdated();
     }
 
@@ -109,12 +109,12 @@ public class SongsDB {
         private final WeakReference<SongsDB> mListener;
 
         public ScanTask(@NotNull SongsDB songs) {
-            mListener = new WeakReference<SongsDB>(songs);
+            mListener = new WeakReference<>(songs);
         }
 
         @Override
         protected List<Song> doInBackground(File... roots) {
-            List<Song> res = new LinkedList<Song>();
+            List<Song> res = new LinkedList<>();
             for(File rootDir : roots) {
                 if (isCancelled())
                     return Collections.emptyList();

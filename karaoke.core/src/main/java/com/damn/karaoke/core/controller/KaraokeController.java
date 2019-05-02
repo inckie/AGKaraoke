@@ -30,7 +30,7 @@ public class KaraokeController implements Recorder.IToneListener {
     private Song.Line mCurrentLine;
     private long mLastUpdate;
     private long mLineStart;
-    private final List<Tone> mTones = new ArrayList<Tone>();
+    private final List<Tone> mTones = new ArrayList<>();
 
     // views
     private LyricsView mLyrics;

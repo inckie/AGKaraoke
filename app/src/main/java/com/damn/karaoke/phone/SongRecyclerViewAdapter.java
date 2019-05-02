@@ -69,7 +69,7 @@ public class SongRecyclerViewAdapter extends RecyclerView.Adapter<SongRecyclerVi
     }
 
     public void setData(List<Song> songs) {
-        mValues = new ArrayList<Song>(songs); // make a copy
+        mValues = new ArrayList<>(songs); // make a copy
         Collections.sort(mValues, mComparator);
     }
 

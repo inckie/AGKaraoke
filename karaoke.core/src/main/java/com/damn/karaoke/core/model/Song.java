@@ -25,7 +25,7 @@ public class Song {
     private File audioFile;
 
     public double gap;
-    public List<Line> lines = new ArrayList<Line>();
+    public List<Line> lines = new ArrayList<>();
 
     //todo: use cache there
     private Bitmap coverImage;
@@ -84,7 +84,7 @@ public class Song {
     public static class Line {
         public double from;
         public double to;
-        public List<Syllable> syllables = new ArrayList<Syllable>();
+        public List<Syllable> syllables = new ArrayList<>();
 
         @Override
         public String toString() {
