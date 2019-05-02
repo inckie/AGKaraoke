@@ -149,8 +149,8 @@ public class SongsListActivity extends Activity implements SongsDB.IListener {
     protected void onResume() {
         super.onResume();
         mSongs.subscribe(this);
-        mSongs.scan();
         mCardScroller.activate();
+        mSongs.scan();
     }
 
     @Override
