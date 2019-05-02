@@ -16,6 +16,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
     packagingOptions {
         exclude 'lib/x86/libtoneanalyzer.so'
         exclude 'lib/x86_64/libtoneanalyzer.so'
