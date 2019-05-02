@@ -33,19 +33,39 @@ public class SongsListActivity extends Activity implements SongsDB.IListener {
 
     private SongsDB mSongs;
 
-    private List<Song> mSongList = new ArrayList<Song>(); // keep a copy
+    private List<Song> mSongList; // keep a copy
 
-    private SongsAdapter mAdapter = new SongsAdapter();
+    // CardScroller.setEmptyView is not working, seems to be a bug in OS
+    private View mEmptyView;
+
+    private Slider.Indeterminate mSlider;
+
+    private static class Holder {
+
+        private final ImageView cover;
+        private final TextView title;
+        private final TextView artist;
+
+        Holder(View convertView){
+            cover = (ImageView) convertView.findViewById(R.id.img_cover);
+            title = (TextView) convertView.findViewById(R.id.lbl_title);
+            artist = (TextView) convertView.findViewById(R.id.lbl_artist);
+        }
+
+        void display(Song song) {
+            cover.setImageBitmap(song.getCoverImage());
+            title.setText(song.title);
+            artist.setText(song.artist);
+        }
+    }
 
     private class SongsAdapter
             extends CardScrollAdapter
             implements AdapterView.OnItemClickListener {
 
-        private View mEmptyView;
-
         // to avoid conflict with isEmpty
         private boolean empty() {
-            return mSongList.isEmpty();
+            return null == mSongList || mSongList.isEmpty();
         }
 
         @Override
@@ -65,47 +85,24 @@ public class SongsListActivity extends Activity implements SongsDB.IListener {
 
         @Override
         public Object getItem(int position) {
-            return empty() ? getEmptyView() : mSongList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            // Never do this in production quality code.
-            // I have checked for many strings, and change of conflict is close to zero
-            return empty() ? -1 : mSongList.get(position).fullPath.hashCode();
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
+            return empty() ? mEmptyView : mSongList.get(position);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (empty())
-                return getEmptyView();
+                return mEmptyView;
 
-            if (null == convertView || convertView == mEmptyView)
-                convertView = getLayoutInflater().inflate(R.layout.view_song_card, null);
+            if (null == convertView || convertView == mEmptyView){
+                convertView = getLayoutInflater().inflate(R.layout.view_song_card, parent, false);
+                convertView.setTag(new Holder(convertView));
+            }
 
+            Holder holder = (Holder) convertView.getTag();
             // We do not use CardBuilder due to the need of keeping CardBuilder instances for every song
             Song song = mSongList.get(position);
-            ImageView cover = (ImageView) convertView.findViewById(R.id.img_cover);
-            cover.setImageBitmap(song.getCoverImage());
-            TextView title = (TextView) convertView.findViewById(R.id.lbl_title);
-            title.setText(song.title);
-            TextView artist = (TextView) convertView.findViewById(R.id.lbl_artist);
-            artist.setText(song.artist);
+            holder.display(song);
             return convertView;
-        }
-
-        private View getEmptyView() {
-            if (mEmptyView == null) {
-                mEmptyView = new CardBuilder(SongsListActivity.this, CardBuilder.Layout.TEXT)
-                        .setText(R.string.msg_no_songs)
-                        .getView();
-            }
-            return mEmptyView;
         }
 
         @Override
@@ -126,8 +123,6 @@ public class SongsListActivity extends Activity implements SongsDB.IListener {
         }
     }
 
-    private Slider.Indeterminate mSlider;
-
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -135,10 +130,18 @@ public class SongsListActivity extends Activity implements SongsDB.IListener {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mSongs = new SongsDB(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
 
+        mEmptyView = new CardBuilder(SongsListActivity.this, CardBuilder.Layout.TEXT)
+                .setText(R.string.msg_scanning)
+                .getView();
+
         mCardScroller = new CardScrollView(this);
-        mCardScroller.setAdapter(mAdapter);
-        mCardScroller.setOnItemClickListener(mAdapter);
+
+        SongsAdapter adapter = new SongsAdapter();
+        mCardScroller.setAdapter(adapter);
+        mCardScroller.setOnItemClickListener(adapter);
+
         setContentView(mCardScroller);
+
         mSlider = Slider.from(mCardScroller).startIndeterminate();
     }
 
@@ -166,7 +169,12 @@ public class SongsListActivity extends Activity implements SongsDB.IListener {
     @Override
     public void onListUpdated() {
         mSlider.hide();
-        mSongList = new ArrayList<Song>(mSongs.getSongs());
-        mAdapter.notifyDataSetChanged();
+        mSongList = new ArrayList<>(mSongs.getSongs());
+        if(mSongList.isEmpty()) {
+            mEmptyView = new CardBuilder(SongsListActivity.this, CardBuilder.Layout.TEXT)
+                    .setText(R.string.msg_no_songs)
+                    .getView();
+        }
+        mCardScroller.getAdapter().notifyDataSetChanged();
     }
 }

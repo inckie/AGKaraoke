@@ -3,4 +3,5 @@
     <string name="title_activity_main">Karaoke</string>
     <string name="lbl_sing">Sing!</string>
     <string name="msg_no_songs">No songs found</string>
+    <string name="msg_scanning">Scanning…</string>
 </resources>
