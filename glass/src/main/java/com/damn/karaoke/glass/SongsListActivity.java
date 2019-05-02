@@ -124,7 +124,7 @@ public class SongsListActivity extends Activity implements SongsDB.IListener {
             intent.putExtra(SingActivity.EXTRA_SONG, song.fullPath.toString());
             startActivity(intent);
         }
-    };
+    }
 
     private Slider.Indeterminate mSlider;
 

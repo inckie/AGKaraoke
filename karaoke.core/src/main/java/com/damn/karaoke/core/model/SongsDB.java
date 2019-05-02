@@ -177,6 +177,6 @@ public class SongsDB {
             if(null != listener)
                 listener.songsUpdated(songs);
         }
-    };
+    }
 
 }
