@@ -7,10 +7,10 @@ import android.view.View;
 import com.damn.karaoke.core.model.Song;
 import com.damn.karaoke.core.model.SongParser;
 import com.damn.karaoke.core.model.Tone;
+import com.damn.karaoke.core.utility.FileReader;
 import com.damn.karaoke.core.views.LyricsView;
 import com.damn.karaoke.core.views.ToneRender;
 
-import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -59,7 +59,7 @@ public class KaraokeController implements Recorder.IToneListener {
 
     public boolean load(File file) {
         try {
-            List<String> lines = FileUtils.readLines(file);
+            List<String> lines = FileReader.readLines(file);
             mSong = SongParser.parse(lines);
             mSong.fullPath = file;
         } catch (Exception e) {

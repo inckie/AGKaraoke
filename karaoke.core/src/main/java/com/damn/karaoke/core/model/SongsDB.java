@@ -3,13 +3,13 @@ package com.damn.karaoke.core.model;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.apache.commons.io.FileUtils;
+import com.damn.karaoke.core.utility.FileReader;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.lang.ref.WeakReference;
-import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -120,7 +120,7 @@ public class SongsDB {
                         continue;
                     for (File songFile : songFiles) {
                         try {
-                            List<String> lines = FileUtils.readLines(songFile, Charset.forName("UTF-8"));
+                            List<String> lines = FileReader.readLines(songFile);
                             Song song = SongParser.parse(lines);
                             if (song == null)
                                 continue;
