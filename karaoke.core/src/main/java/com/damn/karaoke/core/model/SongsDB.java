@@ -146,6 +146,12 @@ public class SongsDB {
                     }
                 }
             }
+            Collections.sort(res, new Comparator<Song>() {
+                @Override
+                public int compare(Song a, Song b) {
+                    return String.CASE_INSENSITIVE_ORDER.compare(a.title, b.title);
+                }
+            });
             return res;
         }
 
