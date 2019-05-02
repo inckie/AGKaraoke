@@ -11,6 +11,7 @@ import java.io.FileFilter;
 import java.lang.ref.WeakReference;
 import java.nio.charset.Charset;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,6 +76,7 @@ public class SongsDB {
         AsyncTask scanTask = mScanTask;
         if(null != scanTask)
             scanTask.cancel(true);
+        mScanTask = null;
         mSongs.clear();
         mRoot = rootDir;
         if(null != scanTask)
