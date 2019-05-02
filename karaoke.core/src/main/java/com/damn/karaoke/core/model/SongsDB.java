@@ -39,7 +39,7 @@ public class SongsDB {
     private final HashSet<IListener> mListeners = new HashSet<>();
 
     public void subscribe(IListener listener) {
-        if(!mListeners.add(listener))
+        if(mListeners.add(listener))
             if(null != mScanTask)
                 listener.onScanStarted();
     }
